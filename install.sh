@@ -23,10 +23,10 @@ sudo echo "        server_tokens off;" >> /etc/nginx/sites-available/default
 sudo echo "        more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
 sudo echo "        root /var/www/$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "        index index.html index.htm index.php index.jpg index.jpeg index.gif index.json index.txt;" >> /etc/nginx/sites-available/default
-sudo echo "        server_name SERVER;" >> /etc/nginx/sites-available/default
+sudo echo "        server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "        location / {" >> /etc/nginx/sites-available/default
-sudo echo "                error_page 404 https://DOMAIN/404;" >> /etc/nginx/sites-available/default
-sudo echo "                try_files $uri $uri/ =404;" >> /etc/nginx/sites-available/default
+sudo echo "                error_page 404 http://$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
+sudo echo "                try_files \$uri \$uri/ =404;" >> /etc/nginx/sites-available/default
 sudo echo "        }" >> /etc/nginx/sites-available/default
 sudo echo "        location ~ .php$ {" >> /etc/nginx/sites-available/default
 sudo echo "        include snippets/fastcgi-php.conf;" >> /etc/nginx/sites-available/default
