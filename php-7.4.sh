@@ -3,18 +3,18 @@ sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
 sudo apt install -y nginx
 sudo systemctl enable nginx
-sudo apt-get install -y ufw
+sudo apt install -y ufw
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'Nginx HTTPS'
-sudo apt-get install -y php-fpm
-sudo apt-get install -y php-mbstring php-xml php-gd php-curl php-bcmath
+sudo apt install -y php-fpm
+sudo apt install -y php-mbstring php-xml php-gd php-curl php-bcmath
 sudo rm -r /var/www/html
 sudo rm -r /etc/apache2
 sudo chmod 777 -R -v /var
 sudo chmod 777 -R -v /etc/php/7.4/fpm
 sudo chmod 777 -R -v /etc/nginx/sites-available
-sudo apt-get install -y nginx-extras
-sudo apt-get install -y certbot python3-certbot-nginx
+sudo apt install -y nginx-extras
+sudo apt install -y certbot python3-certbot-nginx
 sudo rm /etc/nginx/sites-available/default
 sudo echo "server {" >> /etc/nginx/sites-available/default
 sudo echo "        listen 80 default_server;" >> /etc/nginx/sites-available/default
