@@ -212,4 +212,12 @@ sudo echo 'opcache.save_comments=0' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.record_warnings=1' >> /etc/php/8.0/fpm/php.ini
 sudo service nginx restart
 sudo service php8.0-fpm restart
-echo "You can open the standard page under http://$(hostname -I | sed 's/ *$//g'). The files are located in /var/www."
+printf "\n"
+printf "\n"
+echo "NGINX Web Server and PHP 8.0 are succesfully installed!"
+echo "It's recommended to reboot Linux, but it's not needed"
+echo "The PHP files are located in /var/www."
+echo "The NGINX settings files are located in /etc/nginx/sites-available"
+echo "The php.ini file is located in /etc/php/8.0/fpm"
+printf "\n"
+echo "You can open the standard page under http://$(hostname -I | sed 's/ *$//g')."
