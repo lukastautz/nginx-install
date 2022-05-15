@@ -179,4 +179,12 @@ sudo echo '[openssl]' >> /etc/php/7.4/fpm/php.ini
 sudo echo '[ffi]' >> /etc/php/7.4/fpm/php.ini
 sudo service nginx restart
 sudo service php7.4-fpm restart
-echo "You can open the standard page under http://$(hostname -I | sed 's/ *$//g'). The files are located in /var/www."
+printf "\n"
+printf "\n"
+echo "NGINX Web Server and PHP 7.4 are succesfully installed!"
+echo "It's recommended to reboot Linux, but it's not needed"
+echo "The PHP files are located in /var/www."
+echo "The NGINX settings files are located in /etc/nginx/sites-available"
+echo "The php.ini file is located in /etc/php/7.4/fpm"
+printf "\n"
+echo "You can open the standard page under http://$(hostname -I | sed 's/ *$//g')."
