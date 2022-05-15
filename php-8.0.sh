@@ -200,9 +200,9 @@ sudo echo '[dba]' >> /etc/php/8.0/fpm/php.ini
 sudo echo '[opcache]' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.enable=1' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.enable_cli=1' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.jit_buffer_size=1024M' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.jit_buffer_size=${maxjit}M' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.jit=1255' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.memory_consumption=1024' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.memory_consumption=${maxjit}' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.interned_strings_buffer=16' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.max_accelerated_files=1000000' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.use_cwd=1' >> /etc/php/8.0/fpm/php.ini
