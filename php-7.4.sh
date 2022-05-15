@@ -1,4 +1,6 @@
 #!/bin/bash
+# Copyright (C) 2022 Lukas Tautz
+# Version: PHP7.4
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
