@@ -1,8 +1,4 @@
 #!/bin/bash
-printf "\n"
-echo "This tool install NGINX and PHP 7.4"
-printf "\n"
-printf "\n"
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
