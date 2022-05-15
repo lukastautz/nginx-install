@@ -1,10 +1,6 @@
 #!/bin/bash
-printf "\n"
-echo "This tool install NGINX and PHP 8.0"
-echo "Enter JIT max RAM usage in MB (can't be bigger than the real RAM): "
-read maxjit
-printf "\n"
-printf "\n"
+# Copyright (C) 2022 Lukas Tautz
+# Version: PHP8;1024MB JIT
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
@@ -200,9 +196,9 @@ sudo echo '[dba]' >> /etc/php/8.0/fpm/php.ini
 sudo echo '[opcache]' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.enable=1' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.enable_cli=1' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.jit_buffer_size=${maxjit}M' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.jit_buffer_size=1024M' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.jit=1255' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.memory_consumption=${maxjit}' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.memory_consumption=1024' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.interned_strings_buffer=16' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.max_accelerated_files=1000000' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.use_cwd=1' >> /etc/php/8.0/fpm/php.ini
