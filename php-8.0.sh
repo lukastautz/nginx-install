@@ -19,9 +19,9 @@ sudo rm -r /etc/php/8.0/apache2
 sudo rm -r /etc/php/8.0/cli
 sudo rm -r /var/www/html
 sudo rm -r /etc/apache2
-sudo chmod 777 -R -v /var
-sudo chmod 777 -R -v /etc/php
-sudo chmod 777 -R -v /etc/nginx/sites-available
+sudo chmod -R -v 777 /var
+sudo chmod -R -v 777 /etc/php
+sudo chmod -R -v 777 /etc/nginx
 sudo apt install -y nginx-extras
 sudo apt install -y certbot python3-certbot-nginx
 sudo rm /etc/nginx/sites-available/default
@@ -43,7 +43,7 @@ sudo echo "        fastcgi_pass unix:/var/run/php/php8.0-fpm.sock;" >> /etc/ngin
 sudo echo "        }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 sudo mkdir /var/www/$(hostname -I | sed 's/ *$//g')
-sudo chmod 777 -R -v /var/www
+sudo chmod -R -v 777 /var/www
 sudo echo "<h1>NGINX is running&#33;</h1>" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
 sudo echo "<p>You can activate TLS with executing 'sudo certbot --nginx -d DOMAIN'. Then, you must restart NGINX with 'sudo service nginx restart'.</p>" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
 sudo echo "<h2>PHP Info:</h2>" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
