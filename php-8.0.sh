@@ -1,7 +1,7 @@
 #!/bin/bash
 printf "\n"
 echo "This tool install NGINX and PHP 8.0"
-echo "Enter JIT max RAM usage (for example 1024 for 1GB max RAM): "
+echo "Enter JIT max RAM usage in MB (can't be bigger than the real RAM): "
 read maxjit
 printf "\n"
 printf "\n"
