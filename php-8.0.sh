@@ -1,4 +1,10 @@
 #!/bin/bash
+printf "\n"
+echo "This tool install NGINX and PHP 8.0"
+echo "Enter JIT max RAM usage (for example 1024 for 1GB max RAM): "
+read maxjit
+printf "\n"
+printf "\n"
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
@@ -100,12 +106,6 @@ sudo echo 'extension=ffi' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'extension=ftp' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'extension=fileinfo' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'extension=gd' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'extension=gettext' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'extension=gmp' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'extension=intl' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'extension=imap' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'extension=ldap' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'extension=mbstring' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'extension=exif' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'extension=openssl' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'extension=soap' >> /etc/php/8.0/fpm/php.ini
