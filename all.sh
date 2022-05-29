@@ -44,8 +44,8 @@ sudo echo "    index index.html index.htm index.php index.jpg index.jpeg index.g
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "    client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
 sudo echo "    location / {" >> /etc/nginx/sites-available/default
-sudo echo "        error_page 404 https://$server_name;" >> /etc/nginx/sites-available/default
-sudo echo "        try_files $uri $uri/ =404;" >> /etc/nginx/sites-available/default
+sudo echo "        error_page 404 https://\$server_name;" >> /etc/nginx/sites-available/default
+sudo echo "        try_files \$uri \$uri/ =404;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location ~ .php$ {" >> /etc/nginx/sites-available/default
 sudo echo "        include snippets/fastcgi-php.conf;" >> /etc/nginx/sites-available/default
@@ -58,7 +58,7 @@ sudo echo "    listen [::]:80;" >> /etc/nginx/sites-available/default
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
 sudo echo "    more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
-sudo echo "    return 302 https://$server_name$request_uri;" >> /etc/nginx/sites-available/default
+sudo echo "    return 302 https://\$server_name\$request_uri;" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 sudo rm /etc/nginx/nginx.conf
 sudo echo 'user root;' >> /etc/nginx/nginx.conf
