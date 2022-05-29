@@ -585,7 +585,7 @@ sudo service php8.0-fpm restart
 sudo service php8.1-fpm restart
 sudo service php7.4-fpm restart
 sudo chown -R -v sitemngr /var
-sudo chown -R -v root /var/lib
+sudo chown -R -v root /var/lib/sudo
 sudo chown -R -v sitemngr /etc/php
 sudo chown -R -v sitemngr /etc/nginx
 sudo chmod -R -v 700 /var
