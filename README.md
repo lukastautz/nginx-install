@@ -1,4 +1,8 @@
 # nginx-install
+## Dev (PHP 8.1 with snakeoil selfsigned TLS):
+```bash
+sudo wget -O - https://raw.githubusercontent.com/lukastautz/nginx-install/main/all.sh | bash
+```
 ## PHP 8.0:
 ### No JIT:
 ```bash
