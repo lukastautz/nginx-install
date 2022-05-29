@@ -33,27 +33,59 @@ sudo apt install -y nginx-extras
 sudo apt install -y certbot python3-certbot-nginx
 sudo rm /etc/nginx/sites-available/default
 sudo echo "server {" >> /etc/nginx/sites-available/default
-sudo echo "        listen 80 default_server;" >> /etc/nginx/sites-available/default
-sudo echo "        listen [::]:80 default_server;" >> /etc/nginx/sites-available/default
-sudo echo "        server_tokens off;" >> /etc/nginx/sites-available/default
-sudo echo "        more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
-sudo echo "        root /var/www/$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
-sudo echo "        index index.html index.htm index.php index.jpg index.jpeg index.gif index.json index.txt;" >> /etc/nginx/sites-available/default
-sudo echo "        server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
-sudo echo "        client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
-sudo echo "        location / {" >> /etc/nginx/sites-available/default
-sudo echo "                error_page 404 http://$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
-sudo echo "                try_files \$uri \$uri/ =404;" >> /etc/nginx/sites-available/default
-sudo echo "        }" >> /etc/nginx/sites-available/default
-sudo echo "        location ~ .php$ {" >> /etc/nginx/sites-available/default
+sudo echo "    listen 443 ssl http2;" >> /etc/nginx/sites-available/default
+sudo echo "    listen [::]:443 ssl http2;" >> /etc/nginx/sites-available/default
+sudo echo "    include snippets/snakeoil.conf;" >> /etc/nginx/sites-available/default
+sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
+sudo echo "    more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
+sudo echo "    more_clear_headers 'X-Powered-By';" >> /etc/nginx/sites-available/default
+sudo echo "    root /var/www/$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
+sudo echo "    index index.html index.htm index.php index.jpg index.jpeg index.gif index.json index.txt;" >> /etc/nginx/sites-available/default
+sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
+sudo echo "    client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
+sudo echo "    location / {" >> /etc/nginx/sites-available/default
+sudo echo "        error_page 404 https://$server_name;" >> /etc/nginx/sites-available/default
+sudo echo "        try_files $uri $uri/ =404;" >> /etc/nginx/sites-available/default
+sudo echo "    }" >> /etc/nginx/sites-available/default
+sudo echo "    location ~ .php$ {" >> /etc/nginx/sites-available/default
 sudo echo "        include snippets/fastcgi-php.conf;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;" >> /etc/nginx/sites-available/default
-sudo echo "        }" >> /etc/nginx/sites-available/default
+sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
+sudo echo "server {" >> /etc/nginx/sites-available/default
+sudo echo "    listen 80;" >> /etc/nginx/sites-available/default
+sudo echo "    listen [::]:80;" >> /etc/nginx/sites-available/default
+sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
+sudo echo "    more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
+sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
+sudo echo "    return 302 https://$server_name$request_uri;" >> /etc/nginx/sites-available/default
+sudo echo "}" >> /etc/nginx/sites-available/default
+sudo rm /etc/nginx/nginx.conf
+sudo echo 'user root;' >> /etc/nginx/nginx.conf
+sudo echo 'worker_processes auto;' >> /etc/nginx/nginx.conf
+sudo echo 'pid /run/nginx.pid;' >> /etc/nginx/nginx.conf
+sudo echo 'include /etc/nginx/modules-enabled/*.conf;' >> /etc/nginx/nginx.conf
+sudo echo 'events {' >> /etc/nginx/nginx.conf
+sudo echo '    worker_connections 768;' >> /etc/nginx/nginx.conf
+sudo echo '}' >> /etc/nginx/nginx.conf
+sudo echo 'http {' >> /etc/nginx/nginx.conf
+sudo echo '    sendfile on;' >> /etc/nginx/nginx.conf
+sudo echo '    tcp_nopush on;' >> /etc/nginx/nginx.conf
+sudo echo '    types_hash_max_size 2048;' >> /etc/nginx/nginx.conf
+sudo echo '    server_tokens off;' >> /etc/nginx/nginx.conf
+sudo echo '    include /etc/nginx/mime.types;' >> /etc/nginx/nginx.conf
+sudo echo '    default_type application/octet-stream;' >> /etc/nginx/nginx.conf
+sudo echo '    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;' >> /etc/nginx/nginx.conf
+sudo echo '    ssl_prefer_server_ciphers on;' >> /etc/nginx/nginx.conf
+sudo echo '    access_log /var/log/nginx/access.log;' >> /etc/nginx/nginx.conf
+sudo echo '    error_log /var/log/nginx/error.log;' >> /etc/nginx/nginx.conf
+sudo echo '    gzip on;' >> /etc/nginx/nginx.conf
+sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
+sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
+sudo echo '}' >> /etc/nginx/nginx.conf
 sudo mkdir /var/www/$(hostname -I | sed 's/ *$//g')
 sudo chmod -R -v 777 /var/www
 sudo echo "<h1>NGINX is running&#33;</h1>" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
-sudo echo "<p>You can activate TLS with executing 'sudo certbot --nginx -d DOMAIN'. Then, you must restart NGINX with 'sudo service nginx restart'.</p>" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
 sudo echo "<h2>PHP Info:</h2>" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
 sudo echo "<?php" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
 sudo echo "phpinfo();" >> /var/www/$(hostname -I | sed 's/ *$//g')/index.php
@@ -567,4 +599,4 @@ echo "The PHP files are located in /var/www."
 echo "The NGINX settings files are located in /etc/nginx/sites-available"
 echo "The php.ini file is located in /etc/php/PHP_VERSION/fpm"
 printf "\n"
-echo "You can open the standard page under http://$(hostname -I | sed 's/ *$//g')."
+echo "You can open the standard page under https://$(hostname -I | sed 's/ *$//g')."
