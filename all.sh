@@ -596,19 +596,19 @@ sudo service nginx restart
 sudo service php8.0-fpm restart
 sudo service php8.1-fpm restart
 sudo service php7.4-fpm restart
-sudo chown -R -v sitemngr /var
-sudo chown -R -v root /var/lib/sudo
-sudo chown -R -v sitemngr /etc/php
-sudo chown -R -v sitemngr /etc/nginx
-sudo chmod -R -v 700 /var
-sudo chmod -R -v 700 /etc/php
-sudo chmod -R -v 700 /etc/nginx
-printf "\n"
-printf "\n"
-echo "NGINX Web Server and PHP 7.4/8.0/8.1 are succesfully installed!"
-echo "It's recommended to reboot Linux, but it's not needed"
-echo "The PHP files are located in /var/www."
-echo "The NGINX settings files are located in /etc/nginx/sites-available"
-echo "The php.ini file is located in /etc/php/PHP_VERSION/fpm"
-printf "\n"
+#sudo chown -R -v sitemngr /var
+#sudo chown -R -v root /var/lib/sudo
+#sudo chown -R -v sitemngr /etc/php
+#sudo chown -R -v sitemngr /etc/nginx
+#sudo chmod -R -v 700 /var
+#sudo chmod -R -v 700 /etc/php
+#sudo chmod -R -v 700 /etc/nginx
+#printf "\n"
+#printf "\n"
+#echo "NGINX Web Server and PHP 7.4/8.0/8.1 are succesfully installed!"
+#echo "It's recommended to reboot Linux, but it's not needed"
+#echo "The PHP files are located in /var/www."
+#echo "The NGINX settings files are located in /etc/nginx/sites-available"
+#echo "The php.ini file is located in /etc/php/PHP_VERSION/fpm"
+#printf "\n"
 echo "You can open the standard page under https://$(hostname -I | sed 's/ *$//g')."
