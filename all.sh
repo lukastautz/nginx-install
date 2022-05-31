@@ -9,6 +9,7 @@ sudo systemctl enable nginx
 sudo apt install -y ufw
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'Nginx HTTPS'
+sudo ufw enable
 sudo apt install -y php-fpm
 sudo apt install -y php-mbstring php-xml php-gd php-curl php-bcmath php-mysql
 sudo apt install -y apt-transport-https software-properties-common
