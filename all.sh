@@ -1,20 +1,14 @@
 #!/bin/bash
 # Copyright (C) 2022 Lukas Tautz
-# Version: Dev
+# Version: PHP8;1024MB JIT
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
 sudo apt install -y nginx
 sudo systemctl enable nginx
-#sudo apt install -y ufw
-#sudo ufw allow 'Nginx HTTP'
-#sudo ufw allow 'Nginx HTTPS'
-#sudo ufw allow 80
-#sudo ufw allow 443
-#sudo ufw allow 22
-#sudo ufw allow incoming
-#sudo ufw allow outgoing
-#sudo ufw enable
+sudo apt install -y ufw
+sudo ufw allow 'Nginx HTTP'
+sudo ufw allow 'Nginx HTTPS'
 sudo apt install -y php-fpm
 sudo apt install -y php-mbstring php-xml php-gd php-curl php-bcmath php-mysql
 sudo apt install -y apt-transport-https software-properties-common
@@ -596,19 +590,19 @@ sudo service nginx restart
 sudo service php8.0-fpm restart
 sudo service php8.1-fpm restart
 sudo service php7.4-fpm restart
-#sudo chown -R -v sitemngr /var
-#sudo chown -R -v root /var/lib/sudo
-#sudo chown -R -v sitemngr /etc/php
-#sudo chown -R -v sitemngr /etc/nginx
-#sudo chmod -R -v 700 /var
-#sudo chmod -R -v 700 /etc/php
-#sudo chmod -R -v 700 /etc/nginx
-#printf "\n"
-#printf "\n"
-#echo "NGINX Web Server and PHP 7.4/8.0/8.1 are succesfully installed!"
-#echo "It's recommended to reboot Linux, but it's not needed"
-#echo "The PHP files are located in /var/www."
-#echo "The NGINX settings files are located in /etc/nginx/sites-available"
-#echo "The php.ini file is located in /etc/php/PHP_VERSION/fpm"
-#printf "\n"
+sudo chown -R -v sitemngr /var
+sudo chown -R -v root /var/lib/sudo
+sudo chown -R -v sitemngr /etc/php
+sudo chown -R -v sitemngr /etc/nginx
+sudo chmod -R -v 700 /var
+sudo chmod -R -v 700 /etc/php
+sudo chmod -R -v 700 /etc/nginx
+printf "\n"
+printf "\n"
+echo "NGINX Web Server and PHP 7.4/8.0/8.1 are succesfully installed!"
+echo "It's recommended to reboot Linux, but it's not needed"
+echo "The PHP files are located in /var/www."
+echo "The NGINX settings files are located in /etc/nginx/sites-available"
+echo "The php.ini file is located in /etc/php/PHP_VERSION/fpm"
+printf "\n"
 echo "You can open the standard page under https://$(hostname -I | sed 's/ *$//g')."
