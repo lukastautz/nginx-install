@@ -1,14 +1,19 @@
 #!/bin/bash
 # Copyright (C) 2022 Lukas Tautz
-# Version: PHP8;1024MB JIT
+# Version: Dev
 sudo apt update -y
 sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
 sudo apt install -y nginx
 sudo systemctl enable nginx
 sudo apt install -y ufw
-sudo ufw allow 'Nginx HTTP'
-sudo ufw allow 'Nginx HTTPS'
+#sudo ufw allow 'Nginx HTTP'
+#sudo ufw allow 'Nginx HTTPS'
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw allow 22
+sudo ufw allow incoming
+sudo ufw allow outgoing
 sudo ufw enable
 sudo apt install -y php-fpm
 sudo apt install -y php-mbstring php-xml php-gd php-curl php-bcmath php-mysql
