@@ -588,7 +588,7 @@ sudo echo '# Auto generated START' | sudo dd of=/var/sitemngr/cronjobs oflag=app
 sudo echo '*/10080 * * * * apt update -y ; apt upgrade -y' | sudo dd of=/var/sitemngr/cronjobs oflag=append conv=notrunc
 sudo echo '# Auto generated END' | sudo dd of=/var/sitemngr/cronjobs oflag=append conv=notrunc
 sudo crontab -u root /var/sitemngr/cronjobs
-sudo make-ssl-cert generate-default-snakeoil --force-overwrite --expiration-days 365000
+# sudo make-ssl-cert generate-default-snakeoil --force-overwrite --expiration-days 365000
 sudo mv -f /etc/nginx/sites-available/default /etc/nginx/sites-available/$(hostname -I | sed 's/ *$//g')
 sudo rm -f /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/$(hostname -I | sed 's/ *$//g') /etc/nginx/sites-enabled/$(hostname -I | sed 's/ *$//g')
