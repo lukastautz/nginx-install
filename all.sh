@@ -12,7 +12,7 @@ sudo apt install -y ufw
 sudo ufw allow 22
 sudo ufw allow 80
 sudo ufw allow 443
-sudo ufw enable
+sudo ufw --force enable
 sudo apt install -y php-fpm
 sudo apt install -y php-mbstring php-xml php-gd php-curl php-bcmath php-mysql
 sudo apt install -y apt-transport-https software-properties-common
