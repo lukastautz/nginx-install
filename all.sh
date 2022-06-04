@@ -7,8 +7,12 @@ sudo apt install -y curl gnupg2 ca-certificates lsb-release
 sudo apt install -y nginx
 sudo systemctl enable nginx
 sudo apt install -y ufw
-sudo ufw allow 'Nginx HTTP'
-sudo ufw allow 'Nginx HTTPS'
+#sudo ufw allow 'Nginx HTTP'
+#sudo ufw allow 'Nginx HTTPS'
+sudo ufw allow 22
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw enable
 sudo apt install -y php-fpm
 sudo apt install -y php-mbstring php-xml php-gd php-curl php-bcmath php-mysql
 sudo apt install -y apt-transport-https software-properties-common
@@ -37,7 +41,7 @@ sudo echo "    listen 443 ssl http2;" >> /etc/nginx/sites-available/default
 sudo echo "    listen [::]:443 ssl http2;" >> /etc/nginx/sites-available/default
 sudo echo "    include snippets/snakeoil.conf;" >> /etc/nginx/sites-available/default
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
-sudo echo "    more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
+sudo echo "    more_set_headers 'Server: siteMngr/nginx';" >> /etc/nginx/sites-available/default
 sudo echo "    more_clear_headers 'X-Powered-By';" >> /etc/nginx/sites-available/default
 sudo echo "    root /var/www/$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "    index index.html index.htm index.php index.jpg index.jpeg index.gif index.json index.txt;" >> /etc/nginx/sites-available/default
@@ -50,13 +54,15 @@ sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location ~ .php$ {" >> /etc/nginx/sites-available/default
 sudo echo "        include snippets/fastcgi-php.conf;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;" >> /etc/nginx/sites-available/default
+sudo echo '        fastcgi_param PHP_VALUE "memory_limit=1152M;\npost_max_size=1024M;\nopcache.enable=1;\nopcache.jit_buffer_size=1024M;\nopcache.memory_consumption=1024";'
+#sudo echo '        fastcgi_param PHP_VALUE "memory_limit=1152M;\npost_max_size=1024M;\nopcache.enable=0;\nopcache.jit_buffer_size=1M;\nopcache.memory_consumption=1";'
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 sudo echo "server {" >> /etc/nginx/sites-available/default
 sudo echo "    listen 80;" >> /etc/nginx/sites-available/default
 sudo echo "    listen [::]:80;" >> /etc/nginx/sites-available/default
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
-sudo echo "    more_set_headers 'Server: NGINX';" >> /etc/nginx/sites-available/default
+sudo echo "    more_set_headers 'Server: siteMngr/nginx';" >> /etc/nginx/sites-available/default
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "    return 302 https://\$server_name\$request_uri;" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
@@ -108,7 +114,7 @@ sudo echo 'zend.exception_string_param_max_len = 15' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'expose_php = On' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'max_execution_time = 60' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'max_input_time = 60' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'memory_limit = 1152M' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'memory_limit = 256M' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'error_reporting = E_ALL' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'display_errors = Off' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'display_startup_errors = On' >> /etc/php/8.0/fpm/php.ini
@@ -231,11 +237,11 @@ sudo echo '[ldap]' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'ldap.max_links = -1' >> /etc/php/8.0/fpm/php.ini
 sudo echo '[dba]' >> /etc/php/8.0/fpm/php.ini
 sudo echo '[opcache]' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.enable=1' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.enable_cli=1' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.jit_buffer_size=1024M' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.enable=0' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.enable_cli=0' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.jit_buffer_size=256M' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.jit=1255' >> /etc/php/8.0/fpm/php.ini
-sudo echo 'opcache.memory_consumption=1024' >> /etc/php/8.0/fpm/php.ini
+sudo echo 'opcache.memory_consumption=256' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.interned_strings_buffer=16' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.max_accelerated_files=1000000' >> /etc/php/8.0/fpm/php.ini
 sudo echo 'opcache.use_cwd=1' >> /etc/php/8.0/fpm/php.ini
@@ -262,7 +268,7 @@ sudo echo 'zend.exception_string_param_max_len = 15' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'expose_php = On' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'max_execution_time = 60' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'max_input_time = 60' >> /etc/php/8.1/fpm/php.ini
-sudo echo 'memory_limit = 1152M' >> /etc/php/8.1/fpm/php.ini
+sudo echo 'memory_limit = 256M' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'error_reporting = E_ALL' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'display_errors = Off' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'display_startup_errors = On' >> /etc/php/8.1/fpm/php.ini
@@ -385,11 +391,11 @@ sudo echo '[ldap]' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'ldap.max_links = -1' >> /etc/php/8.1/fpm/php.ini
 sudo echo '[dba]' >> /etc/php/8.1/fpm/php.ini
 sudo echo '[opcache]' >> /etc/php/8.1/fpm/php.ini
-sudo echo 'opcache.enable=1' >> /etc/php/8.1/fpm/php.ini
-sudo echo 'opcache.enable_cli=1' >> /etc/php/8.1/fpm/php.ini
-sudo echo 'opcache.jit_buffer_size=1024M' >> /etc/php/8.1/fpm/php.ini
+sudo echo 'opcache.enable=0' >> /etc/php/8.1/fpm/php.ini
+sudo echo 'opcache.enable_cli=0' >> /etc/php/8.1/fpm/php.ini
+sudo echo 'opcache.jit_buffer_size=256M' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'opcache.jit=1255' >> /etc/php/8.1/fpm/php.ini
-sudo echo 'opcache.memory_consumption=1024' >> /etc/php/8.1/fpm/php.ini
+sudo echo 'opcache.memory_consumption=256' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'opcache.interned_strings_buffer=16' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'opcache.max_accelerated_files=1000000' >> /etc/php/8.1/fpm/php.ini
 sudo echo 'opcache.use_cwd=1' >> /etc/php/8.1/fpm/php.ini
@@ -415,11 +421,11 @@ sudo echo 'zend.exception_ignore_args = On' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'expose_php = Off' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'max_execution_time = 60' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'max_input_time = 60' >> /etc/php/7.4/fpm/php.ini
-sudo echo 'memory_limit = 1152M' >> /etc/php/7.4/fpm/php.ini
+sudo echo 'memory_limit = 256M' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'display_errors = Off' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'display_startup_errors = Off' >> /etc/php/7.4/fpm/php.ini
-sudo echo 'log_errors = On' >> /etc/php/7.4/fpm/php.ini
+sudo echo 'log_errors = Off' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'log_errors_max_len = 1024' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'ignore_repeated_errors = Off' >> /etc/php/7.4/fpm/php.ini
 sudo echo 'ignore_repeated_source = Off' >> /etc/php/7.4/fpm/php.ini
@@ -577,7 +583,7 @@ sudo echo 'pm.max_spare_servers = 3' >> /etc/php/8.1/fpm/pool.d/www.conf
 sudo mkdir /var/sitemngr
 sudo echo '# Copyright (C) 2022 Lukas Tautz' >> /var/sitemngr/cronjobs
 sudo echo '# DO NOT EDIT THIS FILE!' >> /var/sitemngr/cronjobs
-sudo echo '# This file is part of sitemngr <https://www.github.com/siteFactorySource/sitemngr>' >> /var/sitemngr/cronjobs
+sudo echo '# This file is part of siteMngr <https://www.github.com/siteFactorySource/siteMngr>' >> /var/sitemngr/cronjobs
 sudo echo '# Auto generated START' >> /var/sitemngr/cronjobs
 sudo echo '*/10080 * * * * apt update -y ; apt upgrade -y' >> /var/sitemngr/cronjobs
 sudo echo '# Auto generated END' >> /var/sitemngr/cronjobs
