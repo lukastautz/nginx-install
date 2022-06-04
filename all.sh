@@ -543,7 +543,7 @@ sudo echo '[ffi]' >> /etc/php/7.4/fpm/php.ini
 sudo useradd --system sitemngr
 sudo groupadd sitemngr-users
 sudo adduser sitemngr sitemngr-users
-sudo echo 'sitemngr ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+sudo echo 'sitemngr ALL=(ALL) NOPASSWD:ALL' | sudo dd of=/etc/sudoers oflag=append conv=notrunc
 sudo rm /etc/php/8.0/fpm/pool.d/www.conf
 sudo echo '[www]' >> /etc/php/8.0/fpm/pool.d/www.conf
 sudo echo 'user = sitemngr' >> /etc/php/8.0/fpm/pool.d/www.conf
