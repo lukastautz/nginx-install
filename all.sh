@@ -54,8 +54,8 @@ sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location ~ .php$ {" >> /etc/nginx/sites-available/default
 sudo echo "        include snippets/fastcgi-php.conf;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;" >> /etc/nginx/sites-available/default
-sudo echo '        fastcgi_param PHP_VALUE "memory_limit=1152M;\npost_max_size=1024M;\nopcache.enable=1;\nopcache.jit_buffer_size=1024M;\nopcache.memory_consumption=1024";'
-# sudo echo '        fastcgi_param PHP_VALUE "memory_limit=1152M;\npost_max_size=1024M;\nopcache.enable=0;\nopcache.jit_buffer_size=1M;\nopcache.memory_consumption=1";'
+# sudo echo '        fastcgi_param PHP_VALUE "memory_limit=1152M;\npost_max_size=1024M;\nopcache.enable=1;\nopcache.jit_buffer_size=1024M;\nopcache.memory_consumption=1024";'
+sudo echo '        fastcgi_param PHP_VALUE "memory_limit=1152M;\npost_max_size=1024M;\nopcache.enable=0;\nopcache.jit_buffer_size=1M;\nopcache.memory_consumption=1";'
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 sudo echo "server {" >> /etc/nginx/sites-available/default
@@ -612,3 +612,4 @@ echo "The NGINX settings files are located in /etc/nginx/sites-available"
 echo "The php.ini file is located in /etc/php/PHP_VERSION/fpm"
 printf "\n"
 echo "You can open the standard page under https://$(hostname -I | sed 's/ *$//g')."
+# Create Let's encrypt certificate with: sudo certbot run --nginx --non-interactive --agree-tos --no-eff-email --email 'EMAIL' --cert-name 'CERTNAME' -d 'DOMAIN1' -d 'DOMAIN2'
