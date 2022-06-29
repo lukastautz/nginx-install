@@ -13,3 +13,5 @@ sudo rm -R -v /var/lib/apache2
 sudo rm -R -v /var/lock/apache2
 sudo rm -R -v /var/log/apache2
 sudo rm -R -v /var/run/apache2
+sudo rm -R -v /var/lib/php/modules/8.0/apache2
+sudo rm -R -v /var/lib/php/modules/8.1/apache2

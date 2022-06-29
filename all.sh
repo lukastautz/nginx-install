@@ -38,7 +38,7 @@ sudo apt install -y certbot python3-certbot-nginx
 sudo rm /etc/nginx/sites-available/default
 sudo echo "server {" >> /etc/nginx/sites-available/default
 sudo echo "    listen 443 ssl http2;" >> /etc/nginx/sites-available/default
-sudo echo "    listen [::]:443 ssl http2;" >> /etc/nginx/sites-available/default
+sudo echo "    listen [::]:443 ipv6only=on ssl http2;" >> /etc/nginx/sites-available/default
 sudo echo "    include snippets/snakeoil.conf;" >> /etc/nginx/sites-available/default
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
 sudo echo "    more_set_headers 'Server: siteMngr/nginx';" >> /etc/nginx/sites-available/default
@@ -60,7 +60,7 @@ sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 sudo echo "server {" >> /etc/nginx/sites-available/default
 sudo echo "    listen 80;" >> /etc/nginx/sites-available/default
-sudo echo "    listen [::]:80;" >> /etc/nginx/sites-available/default
+sudo echo "    listen [::]:80 ipv6only=on;" >> /etc/nginx/sites-available/default
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
 sudo echo "    more_set_headers 'Server: siteMngr/nginx';" >> /etc/nginx/sites-available/default
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
@@ -600,6 +600,23 @@ sudo chown -R sitemngr /var
 sudo chown -R root /var/lib/sudo
 sudo chown -R sitemngr /etc/php
 sudo chown -R sitemngr /etc/nginx
+sudo service apache2 stop
+sudo apt purge -y apache2-bin apache2-data apache2-utils apache2
+sudo apt autoremove -y
+sudo rm -R -v /usr/sbin/apache2
+sudo rm -R -v /usr/sbin/apache2ctl
+sudo rm -R -v /usr/lib/apache2
+sudo rm -R -v /usr/share/apache2
+sudo rm -v /usr/share/man/man8/apache2.8.gz
+sudo rm -R -v /var/lib/apache2
+sudo rm -R -v /run/apache2
+sudo rm -R -v /var/cache/apache2
+sudo rm -R -v /var/lib/apache2
+sudo rm -R -v /var/lock/apache2
+sudo rm -R -v /var/log/apache2
+sudo rm -R -v /var/run/apache2
+sudo rm -R -v /var/lib/php/modules/8.0/apache2
+sudo rm -R -v /var/lib/php/modules/8.1/apache2
 sudo chmod -R 700 /var
 sudo chmod -R 700 /etc/php
 sudo chmod -R 700 /etc/nginx
