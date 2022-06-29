@@ -1,6 +1,6 @@
 sudo service apache2 stop
-sudo apt-get purge -y apache2-bin apache2-data apache2-utils apache2
-sudo apt-get autoremove -y
+sudo apt purge -y apache2-bin apache2-data apache2-utils apache2
+sudo apt autoremove -y
 sudo rm -R -v /usr/sbin/apache2
 sudo rm -R -v /usr/sbin/apache2ctl
 sudo rm -R -v /usr/lib/apache2
