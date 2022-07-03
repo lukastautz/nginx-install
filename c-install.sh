@@ -76,7 +76,7 @@ sudo echo '    gzip on;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
 sudo echo '}' >> /etc/nginx/nginx.conf
-sudo apt install build-essential
+sudo apt install -y build-essential
 sudo mkdir /var/www/default
 sudo rm /lib/systemd/system/fcgiwrap.service
 sudo echo "[Unit]" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
