@@ -1,4 +1,8 @@
 # nginx-install
+## With C and without PHP:
+```bash
+sudo wget -O - https://raw.githubusercontent.com/lukastautz/nginx-install/main/c-install.sh | bash
+```
 ## Dev (PHP 8.1 with snakeoil selfsigned TLS):
 ```bash
 sudo wget -O - https://raw.githubusercontent.com/lukastautz/nginx-install/main/all.sh | bash
