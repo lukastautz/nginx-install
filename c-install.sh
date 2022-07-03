@@ -17,8 +17,8 @@ sudo echo "    listen 80;" >> /etc/nginx/sites-available/default
 sudo echo "    listen [::]:80 ipv6only=on;" >> /etc/nginx/sites-available/default
 #sudo echo "    include snippets/snakeoil.conf;" >> /etc/nginx/sites-available/default
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
-sudo echo "    more_set_headers 'Server: siteMngr/nginx';" >> /etc/nginx/sites-available/default
-sudo echo "    root /var/www/$(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
+sudo echo "    more_set_headers 'Server: cBin/nginx';" >> /etc/nginx/sites-available/default
+sudo echo "    root /var/www/default;" >> /etc/nginx/sites-available/default
 sudo echo "    index index.html index.htm index.cbin index.cbin_gzip index.jpg index.jpeg index.gif index.json index.txt;" >> /etc/nginx/sites-available/default
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "    client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
@@ -37,6 +37,12 @@ sudo echo "        gzip on;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/run/fcgiwrap.socket;" >> /etc/nginx/sites-available/default
 sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;" >> /etc/nginx/sites-available/default
+sudo echo "    }" >> /etc/nginx/sites-available/default
+sudo echo "    location ~ .c$ {" >> /etc/nginx/sites-available/default
+sudo echo "        deny all;" >> /etc/nginx/sites-available/default
+sudo echo "    }" >> /etc/nginx/sites-available/default
+sudo echo "    location ~ .h$ {" >> /etc/nginx/sites-available/default
+sudo echo "        deny all;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 #sudo echo "server {" >> /etc/nginx/sites-available/default
@@ -70,6 +76,33 @@ sudo echo '    gzip on;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
 sudo echo '}' >> /etc/nginx/nginx.conf
-sudo mkdir /var/www/$(hostname -I | sed 's/ *$//g')
+sudo apt install build-essential
+sudo mkdir /var/www/default
+sudo rm /lib/systemd/system/fcgiwrap.service
+sudo echo "[Unit]" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "Description=Simple CGI Server" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "After=nss-user-lookup.target" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "Requires=fcgiwrap.socket" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "[Service]" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "Environment=DAEMON_OPTS=-f" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "EnvironmentFile=-/etc/default/fcgiwrap" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "ExecStart=/usr/sbin/fcgiwrap ${DAEMON_OPTS}" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "User=root" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "Group=root" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "[Install]" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo echo "Also=fcgiwrap.socket" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
+sudo systemctl daemon-reload
+sudo service fcgiwrap restart
+sudo echo "#include <stdio.h>" >> /var/www/default/index.c
+sudo echo "#include <stdlib.h>" >> /var/www/default/index.c
+sudo echo "int main ()" >> /var/www/default/index.c
+sudo echo "{" >> /var/www/default/index.c
+sudo echo "    printf (\"Content-Type: text/html\n\n\" );" >> /var/www/default/index.c
+sudo echo "    printf (\"<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>It works!</title>\n\t</head>\n\t<body>\n\t\t<h1>It works!</h1>\n\t\tThis site is generated with C!\n\t</body>\n</html>\");" >> /var/www/default/index.c
+sudo echo "    return 0;" >> /var/www/default/index.c
+sudo echo "}" >> /var/www/default/index.c
+sudo gcc /var/www/default/index.c -o /var/www/default/index.cbin
 sudo chmod -R -v 777 /var/www
 sudo service nginx restart
