@@ -1,3 +1,5 @@
+sudo apt update -y
+sudo apt upgrade -y
 sudo apt install -y curl gnupg2 ca-certificates lsb-release
 sudo apt install -y nginx
 sudo systemctl enable nginx
@@ -95,6 +97,7 @@ sudo echo "[Install]" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=ap
 sudo echo "Also=fcgiwrap.socket" | sudo dd of=/lib/systemd/system/fcgiwrap.service oflag=append conv=notrunc
 sudo systemctl daemon-reload
 sudo service fcgiwrap restart
+sudo chmod -R -v 777 /var/www
 sudo echo "#include <stdio.h>" >> /var/www/default/index.c
 sudo echo "#include <stdlib.h>" >> /var/www/default/index.c
 sudo echo "int main ()" >> /var/www/default/index.c
@@ -104,5 +107,4 @@ sudo echo "    printf (\"<!DOCTYPE html>\n<html>\n\t<head>\n\t\t<title>It works!
 sudo echo "    return 0;" >> /var/www/default/index.c
 sudo echo "}" >> /var/www/default/index.c
 sudo gcc /var/www/default/index.c -o /var/www/default/index.cbin
-sudo chmod -R -v 777 /var/www
 sudo service nginx restart
