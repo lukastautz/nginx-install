@@ -50,7 +50,7 @@ sudo echo "}" >> /etc/nginx/sites-available/default
 sudo rm /etc/nginx/nginx.conf
 sudo echo 'user root;' >> /etc/nginx/nginx.conf
 sudo echo 'worker_processes auto;' >> /etc/nginx/nginx.conf
-sudo echo 'pid /run/nginx.pid;' >> /etc/nginx/nginx.conf
+sudo echo 'pid /var/run/nginx.pid;' >> /etc/nginx/nginx.conf
 sudo echo 'include /etc/nginx/modules-enabled/*.conf;' >> /etc/nginx/nginx.conf
 sudo echo 'events {' >> /etc/nginx/nginx.conf
 sudo echo '    worker_connections 768;' >> /etc/nginx/nginx.conf
