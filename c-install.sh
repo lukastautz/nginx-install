@@ -30,13 +30,13 @@ sudo echo "    location ~ .cbin$ {" >> /etc/nginx/sites-available/default
 sudo echo "        gzip off;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/run/fcgiwrap.socket;" >> /etc/nginx/sites-available/default
 sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
-sudo echo "        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;" >> /etc/nginx/sites-available/default
+sudo echo "        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location ~ .cbin_gzip$ {" >> /etc/nginx/sites-available/default
 sudo echo "        gzip on;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/run/fcgiwrap.socket;" >> /etc/nginx/sites-available/default
 sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
-sudo echo "        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;" >> /etc/nginx/sites-available/default
+sudo echo "        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "}" >> /etc/nginx/sites-available/default
 #sudo echo "server {" >> /etc/nginx/sites-available/default
