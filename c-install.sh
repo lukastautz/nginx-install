@@ -22,7 +22,7 @@ sudo echo "    location ~ \"^/(static|favicon.ico|robots.txt)/\" {" >> /etc/ngin
 sudo echo "        error_page 404 http://\$server_name/404;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location / {" >> /etc/nginx/sites-available/default
-sudo echo "        fastcgi_pass unix:/var/sockets/default;" >> /etc/nginx/sites-available/default
+sudo echo "        fastcgi_pass unix:/var/sockets/default.sock;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_buffering off;" >> /etc/nginx/sites-available/default
 sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
@@ -97,7 +97,7 @@ sudo tar -xf fcgi-headers.tar.xz
 sudo rm fcgi-headers.tar.xz
 sudo gcc /var/www/default/app.c -lfcgi -o /var/www/default/app.fcgi
 sudo mkdir /var/sockets
-sudo spawn-fcgi -s/var/sockets/default /var/www/default/app.fcgi
+sudo spawn-fcgi -s/var/sockets/default.sock /var/www/default/app.fcgi -P/var/sockets/default.pid
 sudo touch /etc/init.d/fcgi-default
 sudo chmod 777 /etc/init.d/fcgi-default
 sudo echo "#!/bin/bash" >> /etc/init.d/fcgi-default
@@ -107,7 +107,7 @@ sudo echo "start() {" >> /etc/init.d/fcgi-default
 sudo echo "    spawn-fcgi -s/var/sockets/\$NAME.sock /var/www/\$NAME/app.fcgi -P/var/sockets/\$NAME.pid" >> /etc/init.d/fcgi-default
 sudo echo "}" >> /etc/init.d/fcgi-default
 sudo echo "stop() {" >> /etc/init.d/fcgi-default
-sudo echo "    kill -9 `cat /var/sockets/\$NAME.pid`" >> /etc/init.d/fcgi-default
+sudo echo "    kill -9 \`cat /var/sockets/\$NAME.pid\`" >> /etc/init.d/fcgi-default
 sudo echo "}" >> /etc/init.d/fcgi-default
 sudo echo "case \"\$1\" in" >> /etc/init.d/fcgi-default
 sudo echo "    start)" >> /etc/init.d/fcgi-default
@@ -121,12 +121,13 @@ sudo echo "       stop" >> /etc/init.d/fcgi-default
 sudo echo "       start" >> /etc/init.d/fcgi-default
 sudo echo "       ;;" >> /etc/init.d/fcgi-default
 sudo echo "    *)" >> /etc/init.d/fcgi-default
-sudo echo "       echo \"Usage: $0 {start|stop|restart}\"" >> /etc/init.d/fcgi-default
+sudo echo "       echo \"Usage: fcgi-\$NAME {start|stop|restart}\"" >> /etc/init.d/fcgi-default
 sudo echo "esac" >> /etc/init.d/fcgi-default
 sudo echo "exit 0" >> /etc/init.d/fcgi-default
 sudo chmod 700 /etc/init.d/fcgi-default
 sudo chmod +x /etc/init.d/fcgi-default
 sudo service nginx restart
+sudo update-rc.d fcgi-default defaults
 # Clear unnecessary files:
 # sudo rm -R /usr/share/GeoIP
 # sudo rm -R /usr/share/man
