@@ -1,6 +1,7 @@
 sudo apt update -y
 sudo apt upgrade -y
-sudo apt install -y curl gnupg2 ca-certificates gcc libfcgi0ldbl nginx ufw nginx-core libnginx-mod-http-headers-more-filter certbot python3-certbot-nginx spawn-fcgi
+# sudo apt install -y curl gnupg2 ca-certificates
+sudo apt install -y gcc libfcgi-dev ufw nginx-core libnginx-mod-http-headers-more-filter certbot python3-certbot-nginx spawn-fcgi
 sudo systemctl enable nginx
 sudo ufw allow 22
 sudo ufw allow 80
@@ -17,9 +18,9 @@ sudo echo "    listen 80;" >> /etc/nginx/sites-available/default
 sudo echo "    listen [::]:80 ipv6only=on;" >> /etc/nginx/sites-available/default
 sudo echo "    root /var/www/default;" >> /etc/nginx/sites-available/default
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
-sudo echo "	location ~ \"^/(static|favicon.ico|robots.txt)/\" {" >> /etc/nginx/sites-available/default
-sudo echo "	    error_page 404 http://\$server_name/404;" >> /etc/nginx/sites-available/default
-sudo echo "	}" >> /etc/nginx/sites-available/default
+sudo echo "    location ~ \"^/(static|favicon.ico|robots.txt)/\" {" >> /etc/nginx/sites-available/default
+sudo echo "        error_page 404 http://\$server_name/404;" >> /etc/nginx/sites-available/default
+sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location / {" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass unix:/var/sockets/default;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_buffering off;" >> /etc/nginx/sites-available/default
@@ -82,6 +83,13 @@ sudo echo '    }' >> /var/www/default/app.c
 sudo echo '    return 0;' >> /var/www/default/app.c
 sudo echo '}' >> /var/www/default/app.c
 cd /usr/include
+sudo rm fastcgi.h
+sudo rm fcgiapp.h
+sudo rm fcgi_config.h
+sudo rm fcgimisc.h
+sudo rm fcgio.h
+sudo rm fcgios.h
+sudo rm fcgi_stdio.h
 sudo wget –O https://raw.githubusercontent.com/lukastautz/nginx-install/main/fcgi-headers.tar.xz
 sudo tar -xf fcgi-headers.tar.xz
 sudo rm fcgi-headers.tar.xz
@@ -96,3 +104,8 @@ sudo echo "spawn-fcgi -s/var/sockets/default /var/www/default/app.fcgi" >> /etc/
 sudo chmod 700 /etc/init.d/spawn-fastcgi.sh
 sudo chmod +x /etc/init.d/spawn-fastcgi.sh
 sudo service nginx restart
+# Clear unnecessary files:
+# sudo rm -R /usr/share/GeoIP
+# sudo rm -R /usr/share/man
+# sudo rm -R /usr/share/dict
+# sudo rm -R /usr/share/doc
