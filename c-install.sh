@@ -57,6 +57,7 @@ sudo echo 'Here is the app.c and app.fcgi (and favicon.ico + robots.txt) located
 sudo echo 'Here are all static files located. NO DYNAMIC APPLICATIONS!' >> /var/www/default/static/README
 sudo echo '#include "fcgi_stdio.h"' >> /var/www/default/app.c
 sudo echo '#include <stdlib.h>' >> /var/www/default/app.c
+sudo echo '#include <unistd.h>' >> /var/www/default/app.c
 sudo echo 'int main()' >> /var/www/default/app.c
 sudo echo '{' >> /var/www/default/app.c
 sudo echo '    int count = 0;' >> /var/www/default/app.c
@@ -73,11 +74,12 @@ sudo echo '            "\t\t<title>Hello World from FastCGI!</title>\n"' >> /var
 sudo echo '            "\t</head>\n"' >> /var/www/default/app.c
 sudo echo '            "\t<body>\n"' >> /var/www/default/app.c
 sudo echo '            "\t\t<h1>Hello World from FastCGI!</h1>\n"' >> /var/www/default/app.c
-sudo echo '            "\t\t<p>Request number %i on host %s!<hr></p>\n"' >> /var/www/default/app.c
+sudo echo '            "\t\t<p>Request number %i on host %s!<hr>Process ID: %d</p>\n"' >> /var/www/default/app.c
 sudo echo '            "\t</body>\n"' >> /var/www/default/app.c
 sudo echo '            "</html>",' >> /var/www/default/app.c
 sudo echo '            count,' >> /var/www/default/app.c
-sudo echo '            getenv("SERVER_NAME")' >> /var/www/default/app.c
+sudo echo '            getenv("SERVER_NAME"),' >> /var/www/default/app.c
+sudo echo '            getpid()' >> /var/www/default/app.c
 sudo echo '        );' >> /var/www/default/app.c
 sudo echo '    }' >> /var/www/default/app.c
 sudo echo '    return 0;' >> /var/www/default/app.c
@@ -96,13 +98,34 @@ sudo rm fcgi-headers.tar.xz
 sudo gcc /var/www/default/app.c -lfcgi -o /var/www/default/app.fcgi
 sudo mkdir /var/sockets
 sudo spawn-fcgi -s/var/sockets/default /var/www/default/app.fcgi
-sudo touch /etc/init.d/spawn-fastcgi.sh
-sudo chmod 777 /etc/init.d/spawn-fastcgi.sh
-sudo echo "# Copyright (C) 2022 Lukas Tautz" >> /etc/init.d/spawn-fastcgi.sh
-sudo echo "# Spawn the FastCGI Processes" >> /etc/init.d/spawn-fastcgi.sh
-sudo echo "spawn-fcgi -s/var/sockets/default /var/www/default/app.fcgi" >> /etc/init.d/spawn-fastcgi.sh
-sudo chmod 700 /etc/init.d/spawn-fastcgi.sh
-sudo chmod +x /etc/init.d/spawn-fastcgi.sh
+sudo touch /etc/init.d/fcgi-default
+sudo chmod 777 /etc/init.d/fcgi-default
+sudo echo "#!/bin/bash" >> /etc/init.d/fcgi-default
+sudo echo "# Spawns a FastCGI Process" >> /etc/init.d/fcgi-default
+sudo echo "NAME=default" >> /etc/init.d/fcgi-default
+sudo echo "start() {" >> /etc/init.d/fcgi-default
+sudo echo "    spawn-fcgi -s/var/sockets/\$NAME.sock /var/www/\$NAME/app.fcgi -P/var/sockets/\$NAME.pid" >> /etc/init.d/fcgi-default
+sudo echo "}" >> /etc/init.d/fcgi-default
+sudo echo "stop() {" >> /etc/init.d/fcgi-default
+sudo echo "    kill -9 `cat /var/sockets/\$NAME.pid`" >> /etc/init.d/fcgi-default
+sudo echo "}" >> /etc/init.d/fcgi-default
+sudo echo "case \"\$1\" in" >> /etc/init.d/fcgi-default
+sudo echo "    start)" >> /etc/init.d/fcgi-default
+sudo echo "       start" >> /etc/init.d/fcgi-default
+sudo echo "       ;;" >> /etc/init.d/fcgi-default
+sudo echo "    stop)" >> /etc/init.d/fcgi-default
+sudo echo "       stop" >> /etc/init.d/fcgi-default
+sudo echo "       ;;" >> /etc/init.d/fcgi-default
+sudo echo "    restart)" >> /etc/init.d/fcgi-default
+sudo echo "       stop" >> /etc/init.d/fcgi-default
+sudo echo "       start" >> /etc/init.d/fcgi-default
+sudo echo "       ;;" >> /etc/init.d/fcgi-default
+sudo echo "    *)" >> /etc/init.d/fcgi-default
+sudo echo "       echo \"Usage: $0 {start|stop|restart}\"" >> /etc/init.d/fcgi-default
+sudo echo "esac" >> /etc/init.d/fcgi-default
+sudo echo "exit 0" >> /etc/init.d/fcgi-default
+sudo chmod 700 /etc/init.d/fcgi-default
+sudo chmod +x /etc/init.d/fcgi-default
 sudo service nginx restart
 # Clear unnecessary files:
 # sudo rm -R /usr/share/GeoIP
