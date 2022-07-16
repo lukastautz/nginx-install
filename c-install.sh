@@ -21,12 +21,14 @@ sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites
 sudo echo "    client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
 sudo echo "    gzip on;" >> /etc/nginx/sites-available/default
 sudo echo "    location / {" >> /etc/nginx/sites-available/default
-sudo echo "        error_page 404 http://\$server_name;" >> /etc/nginx/sites-available/default
-sudo echo "        try_files \$uri \$uri/ =404;" >> /etc/nginx/sites-available/default
-sudo echo "    }" >> /etc/nginx/sites-available/default
-sudo echo "    location / {" >> /etc/nginx/sites-available/default
+sudo echo "        error_page 404 http://\$server_name/404;" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass 0.0.0.0:9999;" >> /etc/nginx/sites-available/default
-sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
+sudo echo "        fastcgi_buffering off;" >> /etc/nginx/sites-available/default
+sudo echo "        if (\$uri !~ \"^/data/\" && \$uri !~ \"^/favicon.ico\") {" >> /etc/nginx/sites-available/default
+sudo echo "            fastcgi_pass 0.0.0.0:9999;" >> /etc/nginx/sites-available/default
+sudo echo "            fastcgi_buffering off;" >> /etc/nginx/sites-available/default
+sudo echo "            include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
+sudo echo "        }" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
 sudo echo "    location ~ .c$ {" >> /etc/nginx/sites-available/default
 sudo echo "        deny all;" >> /etc/nginx/sites-available/default
@@ -66,8 +68,8 @@ sudo echo '    gzip on;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
 sudo echo '}' >> /etc/nginx/nginx.conf
-sudo chmod -R -v 777 /var
 sudo mkdir /var/www/default
+sudo chmod -R -v 777 /var
 sudo echo '#include "fcgi_stdio.h"' >> /var/www/default/app.c
 sudo echo '#include <stdlib.h>' >> /var/www/default/app.c
 sudo echo 'int main()' >> /var/www/default/app.c
