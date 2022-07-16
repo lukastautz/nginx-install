@@ -69,7 +69,10 @@ sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
 sudo echo '}' >> /etc/nginx/nginx.conf
 sudo mkdir /var/www/default
+sudo mkdir /var/www/default/data
 sudo chmod -R -v 777 /var
+sudo echo 'Here is the app.c and appc.fcgi and the favicon.ico located. NOT MORE!' >> /var/www/default/README
+sudo echo 'Here are all static files located. NO DYNAMIC APPLICATIONS!' >> /var/www/default/data/README
 sudo echo '#include "fcgi_stdio.h"' >> /var/www/default/app.c
 sudo echo '#include <stdlib.h>' >> /var/www/default/app.c
 sudo echo 'int main()' >> /var/www/default/app.c
