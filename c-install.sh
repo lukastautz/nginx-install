@@ -16,15 +16,15 @@ sudo echo "    listen [::]:80 ipv6only=on;" >> /etc/nginx/sites-available/defaul
 sudo echo "    server_tokens off;" >> /etc/nginx/sites-available/default
 sudo echo "    more_set_headers 'Server: FCGI/NGINX';" >> /etc/nginx/sites-available/default
 sudo echo "    root /var/www/default;" >> /etc/nginx/sites-available/default
-sudo echo "    index index.html index.htm index.jpg index.jpeg index.gif index.json index.txt;" >> /etc/nginx/sites-available/default
+sudo echo "    index index.html index.htm index.txt index.json index.jpg index.jpeg index.gif index.png;" >> /etc/nginx/sites-available/default
 sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
 sudo echo "    client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
+sudo echo "    gzip on;" >> /etc/nginx/sites-available/default
 sudo echo "    location / {" >> /etc/nginx/sites-available/default
 sudo echo "        error_page 404 http://\$server_name;" >> /etc/nginx/sites-available/default
 sudo echo "        try_files \$uri \$uri/ =404;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
-sudo echo "    location ~ /cgi/ $ {" >> /etc/nginx/sites-available/default
-sudo echo "        gzip on;" >> /etc/nginx/sites-available/default
+sudo echo "    location / {" >> /etc/nginx/sites-available/default
 sudo echo "        fastcgi_pass 0.0.0.0:9999;" >> /etc/nginx/sites-available/default
 sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
 sudo echo "    }" >> /etc/nginx/sites-available/default
@@ -66,15 +66,14 @@ sudo echo '    gzip on;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
 sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
 sudo echo '}' >> /etc/nginx/nginx.conf
+sudo chmod -R -v 777 /var
 sudo mkdir /var/www/default
-sudo chmod -R -v 700 /var
-sudo chmod -R -v 777 /var/www
 sudo echo '#include "fcgi_stdio.h"' >> /var/www/default/app.c
 sudo echo '#include <stdlib.h>' >> /var/www/default/app.c
 sudo echo 'int main()' >> /var/www/default/app.c
 sudo echo '{' >> /var/www/default/app.c
 sudo echo '    int count = 0;' >> /var/www/default/app.c
-sudo echo '    while(FCGI_Accept() >=0 )' >> /var/www/default/app.c
+sudo echo '    while (FCGI_Accept() >=0)' >> /var/www/default/app.c
 sudo echo '    {' >> /var/www/default/app.c
 sudo echo '        count++;' >> /var/www/default/app.c
 sudo echo '        printf(' >> /var/www/default/app.c
@@ -87,17 +86,25 @@ sudo echo '            "\t\t<title>Hello World from FastCGI!</title>\n"' >> /var
 sudo echo '            "\t</head>\n"' >> /var/www/default/app.c
 sudo echo '            "\t<body>\n"' >> /var/www/default/app.c
 sudo echo '            "\t\t<h1>Hello World from FastCGI!</h1>\n"' >> /var/www/default/app.c
-sudo echo '            "\t\t<p>This is the %i view!</p>\n"' >> /var/www/default/app.c
+sudo echo '            "\t\t<p>Request number %i on host %s!</p>\n"' >> /var/www/default/app.c
 sudo echo '            "\t</body>\n"' >> /var/www/default/app.c
 sudo echo '            "</html>",' >> /var/www/default/app.c
-sudo echo '            count' >> /var/www/default/app.c
+sudo echo '            count,' >> /var/www/default/app.c
+sudo echo '            getenv("SERVER_NAME")' >> /var/www/default/app.c
 sudo echo '        );' >> /var/www/default/app.c
 sudo echo '    }' >> /var/www/default/app.c
 sudo echo '    return 0;' >> /var/www/default/app.c
 sudo echo '}' >> /var/www/default/app.c
 cd /usr/include
 sudo wget –O https://raw.githubusercontent.com/lukastautz/nginx-install/main/fcgi-headers.tar.xz
-sudo tar -xf --overwrite fcgi-headers.tar.xz
+sudo rm fastcgi.h
+sudo rm fcgiapp.h
+sudo rm fcgi_config.h
+sudo rm fcgimisc.h
+sudo rm fcgio.h
+sudo rm fcgios.h
+sudo rm fcgi_stdio.h
+sudo tar -xf fcgi-headers.tar.xz
 sudo rm fcgi-headers.tar.xz
 sudo gcc /var/www/default/app.c -lfcgi -o /var/www/default/app.fcgi
 sudo cgi-fcgi -connect 0.0.0.0:9999 /var/www/default/app.fcgi
