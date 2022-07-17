@@ -10,80 +10,80 @@ sudo ufw --force enable
 sudo chmod -R -v 777 /etc/nginx
 sudo rm -R /var/www/html
 sudo rm /etc/nginx/sites-available/default
-sudo echo "index index.html index.htm index.txt index.json index.jpg index.jpeg index.gif index.png;" >> /etc/nginx/sites-available/default
-sudo echo "client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
-sudo echo "more_set_headers 'Server: FCGI/NGINX';" >> /etc/nginx/sites-available/default
-sudo echo "server {" >> /etc/nginx/sites-available/default
-sudo echo "    listen 80;" >> /etc/nginx/sites-available/default
-sudo echo "    listen [::]:80 ipv6only=on;" >> /etc/nginx/sites-available/default
-sudo echo "    root /var/www/default;" >> /etc/nginx/sites-available/default
-sudo echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
-sudo echo "    location ~ \"^/(static|favicon.ico|robots.txt)/\" {" >> /etc/nginx/sites-available/default
-sudo echo "        error_page 404 http://\$server_name/404;" >> /etc/nginx/sites-available/default
-sudo echo "    }" >> /etc/nginx/sites-available/default
-sudo echo "    location / {" >> /etc/nginx/sites-available/default
-sudo echo "        fastcgi_pass unix:/var/sockets/default.sock;" >> /etc/nginx/sites-available/default
-sudo echo "        fastcgi_buffering off;" >> /etc/nginx/sites-available/default
-sudo echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
-sudo echo "    }" >> /etc/nginx/sites-available/default
-sudo echo "}" >> /etc/nginx/sites-available/default
+echo "index index.html index.htm index.txt index.json index.jpg index.jpeg index.gif index.png;" >> /etc/nginx/sites-available/default
+echo "client_max_body_size 1024M;" >> /etc/nginx/sites-available/default
+echo "more_set_headers 'Server: FCGI/NGINX';" >> /etc/nginx/sites-available/default
+echo "server {" >> /etc/nginx/sites-available/default
+echo "    listen 80;" >> /etc/nginx/sites-available/default
+echo "    listen [::]:80 ipv6only=on;" >> /etc/nginx/sites-available/default
+echo "    root /var/www/default;" >> /etc/nginx/sites-available/default
+echo "    server_name $(hostname -I | sed 's/ *$//g');" >> /etc/nginx/sites-available/default
+echo "    location ~ \"^/(static|favicon.ico|robots.txt)/\" {" >> /etc/nginx/sites-available/default
+echo "        error_page 404 http://\$server_name/404;" >> /etc/nginx/sites-available/default
+echo "    }" >> /etc/nginx/sites-available/default
+echo "    location / {" >> /etc/nginx/sites-available/default
+echo "        fastcgi_pass unix:/var/sockets/default.sock;" >> /etc/nginx/sites-available/default
+echo "        fastcgi_buffering off;" >> /etc/nginx/sites-available/default
+echo "        include /etc/nginx/fastcgi_params;" >> /etc/nginx/sites-available/default
+echo "    }" >> /etc/nginx/sites-available/default
+echo "}" >> /etc/nginx/sites-available/default
 sudo rm /etc/nginx/nginx.conf
-sudo echo 'user root;' >> /etc/nginx/nginx.conf
-sudo echo 'worker_processes auto;' >> /etc/nginx/nginx.conf
-sudo echo 'pid /var/run/nginx.pid;' >> /etc/nginx/nginx.conf
-sudo echo 'include /etc/nginx/modules-enabled/*.conf;' >> /etc/nginx/nginx.conf
-sudo echo 'events {' >> /etc/nginx/nginx.conf
-sudo echo '    worker_connections 512;' >> /etc/nginx/nginx.conf
-sudo echo '}' >> /etc/nginx/nginx.conf
-sudo echo 'http {' >> /etc/nginx/nginx.conf
-sudo echo '    sendfile on;' >> /etc/nginx/nginx.conf
-sudo echo '    tcp_nopush on;' >> /etc/nginx/nginx.conf
-sudo echo '    types_hash_max_size 2048;' >> /etc/nginx/nginx.conf
-sudo echo '    server_tokens off;' >> /etc/nginx/nginx.conf
-sudo echo '    include /etc/nginx/mime.types;' >> /etc/nginx/nginx.conf
-sudo echo '    default_type application/octet-stream;' >> /etc/nginx/nginx.conf
-sudo echo '    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;' >> /etc/nginx/nginx.conf
-sudo echo '    ssl_prefer_server_ciphers on;' >> /etc/nginx/nginx.conf
-sudo echo '    access_log /dev/null;' >> /etc/nginx/nginx.conf
-sudo echo '    error_log /dev/null;' >> /etc/nginx/nginx.conf
-sudo echo '    gzip on;' >> /etc/nginx/nginx.conf
-sudo echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
-sudo echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
-sudo echo '}' >> /etc/nginx/nginx.conf
+echo 'user root;' >> /etc/nginx/nginx.conf
+echo 'worker_processes auto;' >> /etc/nginx/nginx.conf
+echo 'pid /var/run/nginx.pid;' >> /etc/nginx/nginx.conf
+echo 'include /etc/nginx/modules-enabled/*.conf;' >> /etc/nginx/nginx.conf
+echo 'events {' >> /etc/nginx/nginx.conf
+echo '    worker_connections 512;' >> /etc/nginx/nginx.conf
+echo '}' >> /etc/nginx/nginx.conf
+echo 'http {' >> /etc/nginx/nginx.conf
+echo '    sendfile on;' >> /etc/nginx/nginx.conf
+echo '    tcp_nopush on;' >> /etc/nginx/nginx.conf
+echo '    types_hash_max_size 2048;' >> /etc/nginx/nginx.conf
+echo '    server_tokens off;' >> /etc/nginx/nginx.conf
+echo '    include /etc/nginx/mime.types;' >> /etc/nginx/nginx.conf
+echo '    default_type application/octet-stream;' >> /etc/nginx/nginx.conf
+echo '    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;' >> /etc/nginx/nginx.conf
+echo '    ssl_prefer_server_ciphers on;' >> /etc/nginx/nginx.conf
+echo '    access_log /dev/null;' >> /etc/nginx/nginx.conf
+echo '    error_log /dev/null;' >> /etc/nginx/nginx.conf
+echo '    gzip on;' >> /etc/nginx/nginx.conf
+echo '    include /etc/nginx/conf.d/*.conf;' >> /etc/nginx/nginx.conf
+echo '    include /etc/nginx/sites-enabled/*;' >> /etc/nginx/nginx.conf
+echo '}' >> /etc/nginx/nginx.conf
 sudo mkdir /var/www/default
 sudo mkdir /var/www/default/data
 sudo chmod -R -v 777 /var
-sudo echo 'Here is the app.c and app.fcgi (and favicon.ico + robots.txt) located. NOT MORE!' >> /var/www/default/README
-sudo echo 'Here are all static files located. NO DYNAMIC APPLICATIONS!' >> /var/www/default/static/README
-sudo echo '#include "fcgi_stdio.h"' >> /var/www/default/app.c
-sudo echo '#include <stdlib.h>' >> /var/www/default/app.c
-sudo echo '#include <unistd.h>' >> /var/www/default/app.c
-sudo echo 'int main()' >> /var/www/default/app.c
-sudo echo '{' >> /var/www/default/app.c
-sudo echo '    int count = 0;' >> /var/www/default/app.c
-sudo echo '    while (FCGI_Accept() >= 0)' >> /var/www/default/app.c
-sudo echo '    {' >> /var/www/default/app.c
-sudo echo '        count++;' >> /var/www/default/app.c
-sudo echo '        printf(' >> /var/www/default/app.c
-sudo echo '            "Content-type: text/html\n\n"' >> /var/www/default/app.c
-sudo echo '            "<!DOCTYPE html>\n"' >> /var/www/default/app.c
-sudo echo '            "<html>\n"' >> /var/www/default/app.c
-sudo echo '            "\t<head>\n"' >> /var/www/default/app.c
-sudo echo '            "\t\t<meta charset=\"UTF-8\">\n"' >> /var/www/default/app.c
-sudo echo '            "\t\t<title>Hello World from FastCGI!</title>\n"' >> /var/www/default/app.c
-sudo echo '            "\t</head>\n"' >> /var/www/default/app.c
-sudo echo '            "\t<body>\n"' >> /var/www/default/app.c
-sudo echo '            "\t\t<h1>Hello World from FastCGI!</h1>\n"' >> /var/www/default/app.c
-sudo echo '            "\t\t<p>Request number %i on host %s!<hr>Process ID: %d</p>\n"' >> /var/www/default/app.c
-sudo echo '            "\t</body>\n"' >> /var/www/default/app.c
-sudo echo '            "</html>",' >> /var/www/default/app.c
-sudo echo '            count,' >> /var/www/default/app.c
-sudo echo '            getenv("SERVER_NAME"),' >> /var/www/default/app.c
-sudo echo '            getpid()' >> /var/www/default/app.c
-sudo echo '        );' >> /var/www/default/app.c
-sudo echo '    }' >> /var/www/default/app.c
-sudo echo '    return 0;' >> /var/www/default/app.c
-sudo echo '}' >> /var/www/default/app.c
+echo 'Here is the app.c and app.fcgi (and favicon.ico + robots.txt) located. NOT MORE!' >> /var/www/default/README
+echo 'Here are all static files located. NO DYNAMIC APPLICATIONS!' >> /var/www/default/static/README
+echo '#include "fcgi_stdio.h"' >> /var/www/default/app.c
+echo '#include <stdlib.h>' >> /var/www/default/app.c
+echo '#include <unistd.h>' >> /var/www/default/app.c
+echo 'int main()' >> /var/www/default/app.c
+echo '{' >> /var/www/default/app.c
+echo '    int count = 0;' >> /var/www/default/app.c
+echo '    while (FCGI_Accept() >= 0)' >> /var/www/default/app.c
+echo '    {' >> /var/www/default/app.c
+echo '        count++;' >> /var/www/default/app.c
+echo '        printf(' >> /var/www/default/app.c
+echo '            "Content-type: text/html\n\n"' >> /var/www/default/app.c
+echo '            "<!DOCTYPE html>\n"' >> /var/www/default/app.c
+echo '            "<html>\n"' >> /var/www/default/app.c
+echo '            "\t<head>\n"' >> /var/www/default/app.c
+echo '            "\t\t<meta charset=\"UTF-8\">\n"' >> /var/www/default/app.c
+echo '            "\t\t<title>Hello World from FastCGI!</title>\n"' >> /var/www/default/app.c
+echo '            "\t</head>\n"' >> /var/www/default/app.c
+echo '            "\t<body>\n"' >> /var/www/default/app.c
+echo '            "\t\t<h1>Hello World from FastCGI!</h1>\n"' >> /var/www/default/app.c
+echo '            "\t\t<p>Request number %i on host %s!<hr>Process ID: %d</p>\n"' >> /var/www/default/app.c
+echo '            "\t</body>\n"' >> /var/www/default/app.c
+echo '            "</html>",' >> /var/www/default/app.c
+echo '            count,' >> /var/www/default/app.c
+echo '            getenv("SERVER_NAME"),' >> /var/www/default/app.c
+echo '            getpid()' >> /var/www/default/app.c
+echo '        );' >> /var/www/default/app.c
+echo '    }' >> /var/www/default/app.c
+echo '    return 0;' >> /var/www/default/app.c
+echo '}' >> /var/www/default/app.c
 cd /usr/include
 sudo rm fastcgi.h
 sudo rm fcgiapp.h
@@ -97,37 +97,42 @@ sudo tar -xf fcgi-headers.tar.xz
 sudo rm fcgi-headers.tar.xz
 sudo gcc /var/www/default/app.c -lfcgi -o /var/www/default/app.fcgi
 sudo mkdir /var/sockets
-sudo spawn-fcgi -s/var/sockets/default.sock /var/www/default/app.fcgi -P/var/sockets/default.pid
 sudo touch /etc/init.d/fcgi-default
 sudo chmod 777 /etc/init.d/fcgi-default
-sudo echo "#!/bin/bash" >> /etc/init.d/fcgi-default
-sudo echo "# Spawns a FastCGI Process" >> /etc/init.d/fcgi-default
-sudo echo "NAME=default" >> /etc/init.d/fcgi-default
-sudo echo "start() {" >> /etc/init.d/fcgi-default
-sudo echo "    spawn-fcgi -s/var/sockets/\$NAME.sock /var/www/\$NAME/app.fcgi -P/var/sockets/\$NAME.pid" >> /etc/init.d/fcgi-default
-sudo echo "}" >> /etc/init.d/fcgi-default
-sudo echo "stop() {" >> /etc/init.d/fcgi-default
-sudo echo "    kill -9 \`cat /var/sockets/\$NAME.pid\`" >> /etc/init.d/fcgi-default
-sudo echo "}" >> /etc/init.d/fcgi-default
-sudo echo "case \"\$1\" in" >> /etc/init.d/fcgi-default
-sudo echo "    start)" >> /etc/init.d/fcgi-default
-sudo echo "       start" >> /etc/init.d/fcgi-default
-sudo echo "       ;;" >> /etc/init.d/fcgi-default
-sudo echo "    stop)" >> /etc/init.d/fcgi-default
-sudo echo "       stop" >> /etc/init.d/fcgi-default
-sudo echo "       ;;" >> /etc/init.d/fcgi-default
-sudo echo "    restart)" >> /etc/init.d/fcgi-default
-sudo echo "       stop" >> /etc/init.d/fcgi-default
-sudo echo "       start" >> /etc/init.d/fcgi-default
-sudo echo "       ;;" >> /etc/init.d/fcgi-default
-sudo echo "    *)" >> /etc/init.d/fcgi-default
-sudo echo "       echo \"Usage: fcgi-\$NAME {start|stop|restart}\"" >> /etc/init.d/fcgi-default
-sudo echo "esac" >> /etc/init.d/fcgi-default
-sudo echo "exit 0" >> /etc/init.d/fcgi-default
+echo "#!/bin/bash" >> /etc/init.d/fcgi-default
+echo "### BEGIN INIT INFO" >> /etc/init.d/fcgi-default
+echo "# Provides:        fcgi-default" >> /etc/init.d/fcgi-default
+echo "# Default-Start:   2 3 4 5" >> /etc/init.d/fcgi-default
+echo "# Description:     FastCGI Process Spawner for default" >> /etc/init.d/fcgi-default
+echo "### END INIT INFO" >> /etc/init.d/fcgi-default
+echo "NAME=default" >> /etc/init.d/fcgi-default
+echo "PATH=/bin" >> /etc/init.d/fcgi-default
+echo "start() {" >> /etc/init.d/fcgi-default
+echo "    spawn-fcgi -s/var/sockets/\$NAME.sock /var/www/\$NAME/app.fcgi -P/var/sockets/\$NAME.pid" >> /etc/init.d/fcgi-default
+echo "}" >> /etc/init.d/fcgi-default
+echo "stop() {" >> /etc/init.d/fcgi-default
+echo "    kill -9 \`cat /var/sockets/\$NAME.pid\`" >> /etc/init.d/fcgi-default
+echo "}" >> /etc/init.d/fcgi-default
+echo "case \"\$1\" in" >> /etc/init.d/fcgi-default
+echo "    start)" >> /etc/init.d/fcgi-default
+echo "       start" >> /etc/init.d/fcgi-default
+echo "       ;;" >> /etc/init.d/fcgi-default
+echo "    stop)" >> /etc/init.d/fcgi-default
+echo "       stop" >> /etc/init.d/fcgi-default
+echo "       ;;" >> /etc/init.d/fcgi-default
+echo "    restart)" >> /etc/init.d/fcgi-default
+echo "       stop" >> /etc/init.d/fcgi-default
+echo "       start" >> /etc/init.d/fcgi-default
+echo "       ;;" >> /etc/init.d/fcgi-default
+echo "    *)" >> /etc/init.d/fcgi-default
+echo "       echo \"Usage: \$0 {start|stop|restart}\"" >> /etc/init.d/fcgi-default
+echo "esac" >> /etc/init.d/fcgi-default
+echo "exit 0" >> /etc/init.d/fcgi-default
 sudo chmod 700 /etc/init.d/fcgi-default
 sudo chmod +x /etc/init.d/fcgi-default
-sudo service nginx restart
 sudo update-rc.d fcgi-default defaults
+sudo service nginx restart
+sudo service fcgi-default start
 # Clear unnecessary files:
 # sudo rm -R /usr/share/GeoIP
 # sudo rm -R /usr/share/man
